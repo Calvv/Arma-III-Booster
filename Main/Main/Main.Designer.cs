@@ -55,9 +55,9 @@
             this.lTitle.Font = new System.Drawing.Font("Segoe UI Semibold", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lTitle.Location = new System.Drawing.Point(78, 13);
             this.lTitle.Name = "lTitle";
-            this.lTitle.Size = new System.Drawing.Size(258, 32);
+            this.lTitle.Size = new System.Drawing.Size(261, 32);
             this.lTitle.TabIndex = 4;
-            this.lTitle.Text = "Arma III Booster - v1.3";
+            this.lTitle.Text = "Arma III Booster - v2.0";
             // 
             // btnBoost
             // 
@@ -70,6 +70,7 @@
             this.btnBoost.TabStop = false;
             this.btnBoost.Text = "Boost";
             this.btnBoost.UseVisualStyleBackColor = false;
+            this.btnBoost.Click += new System.EventHandler(this.btnBoost_Click);
             // 
             // btnLockUnlock
             // 
@@ -81,6 +82,7 @@
             this.btnLockUnlock.TabStop = false;
             this.btnLockUnlock.Text = "Lock configuration";
             this.btnLockUnlock.UseVisualStyleBackColor = true;
+            this.btnLockUnlock.Click += new System.EventHandler(this.btnLockUnlock_Click);
             // 
             // btnSelectDir
             // 
@@ -91,11 +93,12 @@
             this.btnSelectDir.TabStop = false;
             this.btnSelectDir.Text = "...";
             this.btnSelectDir.UseVisualStyleBackColor = true;
+            this.btnSelectDir.Click += new System.EventHandler(this.btnSelectDir_Click);
             // 
             // cbProfiles
             // 
-            this.cbProfiles.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.cbProfiles.DropDownHeight = 40;
+            this.cbProfiles.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbProfiles.FormattingEnabled = true;
             this.cbProfiles.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.cbProfiles.IntegralHeight = false;

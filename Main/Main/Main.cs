@@ -37,8 +37,20 @@ namespace Main
         public Main()
         {
             InitializeComponent();
+            Load_Everything();
         }
 
+        public void Load_Everything() //this is just so that the Main load up function doesn't get messy
+        {
+            CheckIfReadOnly(cfg_standardPath); //don't ask :) This isn't professional programming.
+            CheckIfArmaIsRunning(); //Could just make this to a function returning a true of false statement but whatever.. 
+            if (ShouldClose) //Checks if Arma III is running, if so then the program will close.
+            {
+                Load += (s, e) => Close();
+                Application.ExitThread();
+                return;
+            }
+        }
 
         //                                 Random Functions           
         /* Sorry about the messy code. I didn't optimize it or something, it is what it is. */
@@ -230,6 +242,31 @@ namespace Main
                     break;
             }
             return splitted[0] + "=" + value;
+        }
+
+
+        //                          Controls
+
+        private void btnBoost_Click(object sender, EventArgs e)
+        {
+            if (ArmaCFG_exists(cfg_standardPath)) //if ArmaIII.cfg exists then boost the profile..
+            {
+                LoadAndCreate_CFG(cfg_standardPath);
+                SaveToTxtFile();
+                CheckIfReadOnly(cfg_standardPath);
+                MessageBox.Show("Arma III Boosted Successfully!", "Credits - Calvv", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private void btnLockUnlock_Click(object sender, EventArgs e) //Toggles the armaIII.cfg's read/write properties. 
+        {
+            SetToOpposit(cfg_standardPath); 
+            CheckIfReadOnly(cfg_standardPath);
+        }
+
+        private void btnSelectDir_Click(object sender, EventArgs e)
+        {
+
         }
 
 
