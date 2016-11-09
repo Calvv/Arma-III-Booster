@@ -19,8 +19,8 @@ namespace Main
 
         bool FadeIn = true;
         bool FadeOut = false;
-
         bool Closable = false;
+
         bool ShouldClose = false;
 
         // Static Strings
@@ -28,11 +28,15 @@ namespace Main
         public static string cfg_standardPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Arma 3\\Arma3.cfg";
         public static string cfg_old = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Arma 3\\Arma3_old.cfg";
 
+        // Strings
+
+        public string profile_path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Arma 3\\";
+
         // Lists
 
         List<string> old_CFG = new List<string>();
         List<string> new_CFG = new List<string>();
-
+        List<string> new_Profile = new List<string>();
 
         public Main()
         {
@@ -50,6 +54,7 @@ namespace Main
                 Application.ExitThread();
                 return;
             }
+            LoadAllUserProfiles();
         }
 
         //                                 Random Functions           
@@ -79,6 +84,8 @@ namespace Main
             }
         }
 
+
+        //  arma3.cfg
         private void CheckIfArmaIsRunning() // Checks if arma III is running
         {
             if (IsProcessOpen("arma3"))
@@ -174,6 +181,47 @@ namespace Main
             tw_new.Close();
         }
 
+        // profile.cfg
+        private void LoadAllUserProfiles()
+        {
+            DirectoryInfo d = new DirectoryInfo(profile_path);
+            foreach (var file in d.GetFiles("*.Arma3Profile"))
+            {
+                if (!file.ToString().Contains("vars") && !file.ToString().Contains("3den"))
+                {
+                    String[] split_file = file.ToString().Split('.');
+                    cbProfiles.Items.Add(split_file[0]);
+                }
+            }
+        }
+        private void SaveProfileToTxtFile()
+        {
+            String path = profile_path + "\\" + cbProfiles.SelectedItem.ToString() + ".Arma3Profile";
+            if (System.IO.File.Exists(path))
+            {
+                System.IO.File.Delete(path);
+            }
+            TextWriter tw_new = new StreamWriter(path);
+
+            foreach (String s in new_Profile)
+            {
+                tw_new.WriteLine(s);
+            }
+            tw_new.Close();
+        }
+        private void LoadAndCreate_ProfileCFG(string Path)
+        {
+            using (var r = new StreamReader(Path))
+            {
+                string line;
+                while ((line = r.ReadLine()) != null)
+                {
+                    new_Profile.Add(ChangeProfileSettings(line));
+                }
+            }
+        }
+
+        //  arma3.cfg
         private string ChangeSettings(string s) //This function changes the values in the CFG. using a switch case.
         {
             string[] splitted = s.Split('=');
@@ -244,17 +292,75 @@ namespace Main
             return splitted[0] + "=" + value;
         }
 
+        //  profile.cfg
+        private string ChangeProfileSettings(string s)
+        {
+            if (s.Contains('='))
+            {
+                string[] splitted = s.Split('=');
+                string value = splitted[1];
+                switch (splitted[0])
+                {
+                    case "tripleHead":
+                        value = "0" + ";";
+                        break;
+                    case "anisoFilter":
+                        value = "0" + ";";
+                        break;
+
+                    case "textureQuality":
+                        value = "2" + ";";
+                        break;
+
+                    case "shadowQuality":
+                        value = "0" + ";";
+                        break;
+
+                    case "sceneComplexity":
+                        value = "30000" + ";";
+                        break;
+
+                    case "viewDistance":
+                        value = "750" + ";";
+                        break;
+
+                    case "preferredObjectViewDistance":
+                        value = "750" + ";";
+                        break;
+
+                    case "terrainGrid":
+                        value = "50" + ";";
+                        break;
+                }
+                return splitted[0] + "=" + value;
+            }
+            else
+            {
+                return s;
+            }
+
+        }//This function changes the values in the Profile CFG. using a switch case
+
 
         //                          Controls
 
         private void btnBoost_Click(object sender, EventArgs e)
         {
-            if (ArmaCFG_exists(cfg_standardPath)) //if ArmaIII.cfg exists then boost the profile..
+            if (cbProfiles.SelectedIndex == -1)
             {
+                MessageBox.Show("Please select a Profile first!", "Error: Select profile", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (ArmaCFG_exists(cfg_standardPath))
+            {
+                //Arma CFG boost
                 LoadAndCreate_CFG(cfg_standardPath);
                 SaveToTxtFile();
                 CheckIfReadOnly(cfg_standardPath);
-                MessageBox.Show("Arma III Boosted Successfully!", "Credits - Calvv", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                //Arma profile boost
+                LoadAndCreate_ProfileCFG(profile_path + "\\" + cbProfiles.SelectedItem.ToString() + ".Arma3Profile");
+                SaveProfileToTxtFile();
+                MessageBox.Show("Arma III Profile Boosted!", "Credits - TheRealDinosaur/Calvv", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
@@ -266,7 +372,17 @@ namespace Main
 
         private void btnSelectDir_Click(object sender, EventArgs e)
         {
+            FolderBrowserDialog fbd = new FolderBrowserDialog();
+            fbd.ShowNewFolderButton = false;
+            fbd.Description = "Select a folder containing a arma 3 profile.\nDefault folder is 'Arma 3'\nOther profiles are in 'Arma 3 - other profiles'";
+            fbd.SelectedPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Arma 3\\";
 
+            if (fbd.ShowDialog() == DialogResult.OK)
+            {
+                profile_path = fbd.SelectedPath;
+                cbProfiles.Items.Clear();
+                LoadAllUserProfiles();
+            }
         }
 
 
