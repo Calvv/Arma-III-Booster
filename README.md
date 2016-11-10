@@ -14,4 +14,4 @@ Support: arma3booster@gmail.com
 
 ![](/Preview.png)
 
-[<h1>Download Now</h1>](https://github.com/Calvv/Arma-III-Booster/raw/master/Arma%20Booster.exe)
+[![](/download.png)](https://github.com/Calvv/Arma-III-Booster/raw/master/Arma%20Booster.exe)
