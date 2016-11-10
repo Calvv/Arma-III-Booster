@@ -7,6 +7,8 @@ website: http://armabooster.weebly.com/
 
 Credits: Calvv/TheRealDinosaur
 
+Support: arma3booster@gmail.com
+
 
 <h1> Preview </h1>
 
