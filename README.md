@@ -1,8 +1,12 @@
 # Arma-III-Booster
 Application that boosts your Arma III performance.
-Current version: 2.0.0
+
+Current version: '2.0.0'
+
 website: http://armabooster.weebly.com/
+
 Credits: Calvv/TheRealDinosaur
+
 
 <h1> Preview </h1>
 
