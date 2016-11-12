@@ -55,9 +55,9 @@
             this.lTitle.Font = new System.Drawing.Font("Segoe UI Semibold", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lTitle.Location = new System.Drawing.Point(78, 13);
             this.lTitle.Name = "lTitle";
-            this.lTitle.Size = new System.Drawing.Size(261, 32);
+            this.lTitle.Size = new System.Drawing.Size(258, 32);
             this.lTitle.TabIndex = 4;
-            this.lTitle.Text = "Arma III Booster - v2.0";
+            this.lTitle.Text = "Arma III Booster - v2.1";
             // 
             // btnBoost
             // 

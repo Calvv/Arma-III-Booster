@@ -47,8 +47,7 @@ namespace Main
         public void Load_Everything() //this is just so that the Main load up function doesn't get messy
         {
             CheckIfReadOnly(cfg_standardPath); //don't ask :) This isn't professional programming.
-            CheckIfArmaIsRunning(); //Could just make this to a function returning a true of false statement but whatever.. 
-            if (ShouldClose) //Checks if Arma III is running, if so then the program will close.
+            if (IsArmaRunning()) //Checks if Arma III is running, if so then the program will close.
             {
                 Load += (s, e) => Close();
                 Application.ExitThread();
@@ -60,7 +59,7 @@ namespace Main
         //                                 Random Functions           
         /* Sorry about the messy code. I didn't optimize it or something, it is what it is. */
 
-        public bool IsProcessOpen(string name) //Checks if a process is running
+        private bool IsProcessOpen(string name) //Checks if a process is running
         {
             foreach (Process clsProcess in Process.GetProcesses())
             {
@@ -71,7 +70,7 @@ namespace Main
             }
             return false;
         }
-        public bool ArmaCFG_exists(string path) //Checks if ArmaIII.cfg exits
+        private bool ArmaCFG_exists(string path) //Checks if ArmaIII.cfg exits
         {
             if (System.IO.File.Exists(path))
             {
@@ -83,18 +82,19 @@ namespace Main
                 return false;
             }
         }
-
-
-        //  arma3.cfg
-        private void CheckIfArmaIsRunning() // Checks if arma III is running
+        private bool IsArmaRunning() //Checks if Arma Is running
         {
             if (IsProcessOpen("arma3"))
             {
                 MessageBox.Show("Please close Arma III before using this application", "Please close Arma III", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
-                ShouldClose = true;
-            }
-
+                return true;
+            }else
+            {
+                return false;
+            }          
         }
+
+        //  arma3.cfg
         private void SetToWriteAndRead(string path) //Sets the file to both read and write (if the file should have been set to read only before)
         {
             FileInfo newinfo = new FileInfo(path);
@@ -193,6 +193,7 @@ namespace Main
                     cbProfiles.Items.Add(split_file[0]);
                 }
             }
+            UpdateComboBox();
         }
         private void SaveProfileToTxtFile()
         {
@@ -342,6 +343,16 @@ namespace Main
         }//This function changes the values in the Profile CFG. using a switch case
 
 
+        // Misc. Functions
+
+        private void UpdateComboBox()
+        {
+            if (cbProfiles.Items.Count >= 1)
+            {
+                cbProfiles.SelectedIndex = 0;
+            }
+        }
+
         //                          Controls
 
         private void btnBoost_Click(object sender, EventArgs e)
@@ -352,15 +363,18 @@ namespace Main
             }
             else if (ArmaCFG_exists(cfg_standardPath))
             {
-                //Arma CFG boost
-                LoadAndCreate_CFG(cfg_standardPath);
-                SaveToTxtFile();
-                CheckIfReadOnly(cfg_standardPath);
+                if (!IsArmaRunning())
+                {
+                    //Arma CFG boost
+                    LoadAndCreate_CFG(cfg_standardPath);
+                    SaveToTxtFile();
+                    CheckIfReadOnly(cfg_standardPath);
 
-                //Arma profile boost
-                LoadAndCreate_ProfileCFG(profile_path + "\\" + cbProfiles.SelectedItem.ToString() + ".Arma3Profile");
-                SaveProfileToTxtFile();
-                MessageBox.Show("Arma III Profile Boosted!", "Credits - TheRealDinosaur/Calvv", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    //Arma profile boost
+                    LoadAndCreate_ProfileCFG(profile_path + "\\" + cbProfiles.SelectedItem.ToString() + ".Arma3Profile");
+                    SaveProfileToTxtFile();
+                    MessageBox.Show("Arma III Profile Boosted!", "Credits - TheRealDinosaur/Calvv", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }            
             }
         }
 
