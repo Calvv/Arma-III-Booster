@@ -3,7 +3,7 @@
 # Arma III Booster
 Application that boosts your Arma III performance.
 
-[current Version](https://raw.githubusercontent.com/Calvv/Arma-III-Booster/master/current.version)
+["Current Version"](https://raw.githubusercontent.com/Calvv/Arma-III-Booster/master/current.version)
 
 website: http://armabooster.weebly.com/
 
