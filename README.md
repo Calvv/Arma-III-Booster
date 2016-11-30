@@ -7,7 +7,6 @@ Application that boosts your Arma III performance.
 
 website: http://armabooster.weebly.com/
 
-Credits: Calvv/TheRealDinosaur
 
 Support: arma3booster@gmail.com
 
